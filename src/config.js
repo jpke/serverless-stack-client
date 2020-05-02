@@ -1,6 +1,8 @@
 const region = "us-east-1";
 
 export default {
+  MAX_ATTACHMENT_SIZE: 5000000,
+  STRIPE_KEY: "pk_test_waddpcpCY8C52r4LsaFklsaJ00KykJfoVe",
   s3: {
     REGION: region,
     BUCKET: "jp-east-1-serverless-tutorial"
