@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+      - master
+name: Deploy master branch
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: npm install
+      - run: npm i -g serverless
+      - name: s3 and cloudfront deploy
+        run: serverless deploy
+      - name: build app
+        run: ./deploy/createDotEnv.sh && npm run build
+      - name: push to s3
+        run: ./deploy/syncToS3.sh
